@@ -11,6 +11,7 @@
     "start": "nest start",
     "db:up": "docker-compose up",
     "db:down": "docker-compose down",
+    "db:feed": "npx prisma db seed",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -74,5 +75,8 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }
