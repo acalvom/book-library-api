@@ -35,9 +35,9 @@ export class BooksController {
     return this.booksService.findByIsbn(isbn);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
-    return this.booksService.update(+id, updateBookDto);
+  @Patch(':isbn')
+  update(@Param('isbn') isbn: string, @Body() updateBookDto: UpdateBookDto) {
+    return this.booksService.update(isbn, updateBookDto);
   }
 
   @Delete(':id')

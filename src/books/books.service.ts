@@ -23,8 +23,8 @@ export class BooksService {
     return this.prisma.book.findUnique({ where: { isbn } });
   }
 
-  update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
+  update(isbn: string, updateBookDto: UpdateBookDto) {
+    return this.prisma.book.update({ where: { isbn }, data: updateBookDto });
   }
 
   remove(id: number) {
