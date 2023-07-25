@@ -8,7 +8,7 @@ export class BooksService {
   constructor(private prisma: PrismaService) {}
 
   create(createBookDto: CreateBookDto) {
-    return 'This action adds a new book';
+    return this.prisma.book.create({ data: createBookDto });
   }
 
   findAll() {
