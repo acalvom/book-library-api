@@ -30,9 +30,9 @@ export class BooksController {
     return this.booksService.findRead();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.booksService.findOne(+id);
+  @Get(':isbn')
+  findByIsbn(@Param('isbn') isbn: string) {
+    return this.booksService.findByIsbn(isbn);
   }
 
   @Patch(':id')

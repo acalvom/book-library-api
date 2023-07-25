@@ -19,8 +19,8 @@ export class BooksService {
     return this.prisma.book.findMany({ where: { isRead: true } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} book`;
+  findByIsbn(isbn: string) {
+    return this.prisma.book.findUnique({ where: { isbn } });
   }
 
   update(id: number, updateBookDto: UpdateBookDto) {
