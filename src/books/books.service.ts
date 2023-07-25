@@ -27,7 +27,7 @@ export class BooksService {
     return this.prisma.book.update({ where: { isbn }, data: updateBookDto });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} book`;
+  remove(isbn: string) {
+    return this.prisma.book.delete({ where: { isbn } });
   }
 }
