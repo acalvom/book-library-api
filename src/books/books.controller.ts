@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
@@ -16,32 +17,47 @@ export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
   @Post()
-  create(@Body() createBookDto: CreateBookDto) {
-    return this.booksService.create(createBookDto);
+  async create(@Body() createBookDto: CreateBookDto) {
+    return await this.booksService.create(createBookDto);
   }
 
   @Get()
-  findAll() {
-    return this.booksService.findAll();
+  async findAll() {
+    return await this.booksService.findAll();
   }
 
   @Get('read')
-  findRead() {
-    return this.booksService.findRead();
+  async findRead() {
+    return await this.booksService.findRead();
   }
 
   @Get(':isbn')
-  findByIsbn(@Param('isbn') isbn: string) {
-    return this.booksService.findByIsbn(isbn);
+  async findByIsbn(@Param('isbn') isbn: string) {
+    const book = await this.booksService.findByIsbn(isbn);
+    if (!book) {
+      throw new NotFoundException(`Book with ${isbn} does not exist.`);
+    }
+    return book;
   }
 
   @Patch(':isbn')
-  update(@Param('isbn') isbn: string, @Body() updateBookDto: UpdateBookDto) {
-    return this.booksService.update(isbn, updateBookDto);
+  async update(
+    @Param('isbn') isbn: string,
+    @Body() updateBookDto: UpdateBookDto,
+  ) {
+    const book = await this.booksService.update(isbn, updateBookDto);
+    if (!book) {
+      throw new NotFoundException(`Book with ${isbn} does not exist.`);
+    }
+    return book;
   }
 
   @Delete(':isbn')
-  remove(@Param('isbn') isbn: string) {
-    return this.booksService.remove(isbn);
+  async remove(@Param('isbn') isbn: string) {
+    const book = await this.booksService.remove(isbn);
+    if (!book) {
+      throw new NotFoundException(`Book with ${isbn} does not exist.`);
+    }
+    return book;
   }
 }
