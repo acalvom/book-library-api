@@ -27,7 +27,7 @@ model Author {
   id        Int      @id @default(autoincrement())
   code      String   @unique
   firstName String
-  lastName  String
+  lastName  String?
   books     Book[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
