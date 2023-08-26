@@ -3,9 +3,41 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+  const author1 = await prisma.author.upsert({
+    where: { code: 'j-k-rowling' },
+    update: {},
+    create: {
+      code: 'j-k-rowling',
+      firstName: 'J.K.',
+      lastName: 'Rowling',
+    },
+  });
+
+  const author2 = await prisma.author.upsert({
+    where: { code: 'george-orwell' },
+    update: {},
+    create: {
+      code: 'george-orwell',
+      firstName: 'George',
+      lastName: 'Orwell',
+    },
+  });
+
+  const author3 = await prisma.author.upsert({
+    where: { code: 'stephen-king' },
+    update: {},
+    create: {
+      code: 'stephen-king',
+      firstName: 'Stephen',
+      lastName: 'King',
+    },
+  });
+
+  console.log({ author1, author2, author3 });
+
   const book1 = await prisma.book.upsert({
     where: { isbn: '978-0747532699' },
-    update: {},
+    update: { authorId: author1.id },
     create: {
       isbn: '978-0747532699',
       title: 'Harry Potter y la piedra filosofal',
@@ -16,14 +48,14 @@ async function main() {
       synopsis:
         'Un niño descubre que es un mago y comienza una aventura en una escuela de magia.',
       year: 1997,
-      author: 'J.K. Rowling',
       isRead: true,
+      authorId: author1.id,
     },
   });
 
   const book2 = await prisma.book.upsert({
     where: { isbn: '978-0451524935' },
-    update: {},
+    update: { authorId: author2.id },
     create: {
       isbn: '978-0451524935',
       title: '1984',
@@ -33,13 +65,13 @@ async function main() {
         'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1657781256i/61439040.jpg',
       synopsis: 'Una inquietante visión de un futuro distópico y totalitario.',
       year: 1949,
-      author: 'George Orwell',
+      authorId: author2.id,
     },
   });
 
   const book3 = await prisma.book.upsert({
     where: { isbn: '978-0307743657' },
-    update: {},
+    update: { authorId: author3.id },
     create: {
       isbn: '978-0307743657',
       title: 'El resplandor',
@@ -50,7 +82,7 @@ async function main() {
       synopsis:
         'Una familia se muda a un hotel aislado para el invierno donde una presencia siniestra influye en el padre hacia la violencia.',
       year: 1977,
-      author: 'Stephen King',
+      authorId: author3.id,
     },
   });
 

@@ -38,10 +38,9 @@ export class CreateBookDto {
   @IsNotEmpty()
   year: number;
 
-  @IsString()
+  @IsInt()
   @IsNotEmpty()
-  @MaxLength(20)
-  author: string;
+  authorId: number;
 
   @IsBoolean()
   @IsOptional()
