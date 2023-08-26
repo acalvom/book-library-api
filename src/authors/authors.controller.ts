@@ -3,12 +3,15 @@ import {
   Get,
   Post,
   Body,
+  Patch,
   Param,
   Query,
+  Delete,
   ParseIntPipe,
 } from '@nestjs/common';
 import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
+import { UpdateAuthorDto } from './dto/update-author.dto';
 
 @Controller('authors')
 export class AuthorsController {
@@ -37,5 +40,18 @@ export class AuthorsController {
   @Get('search')
   findByName(@Query('name') searchStr?: string) {
     return this.authorsService.findByName(searchStr);
+  }
+
+  @Patch(':code')
+  update(
+    @Param('code') code: string,
+    @Body() updateAuthorDto: UpdateAuthorDto,
+  ) {
+    return this.authorsService.update(code, updateAuthorDto);
+  }
+
+  @Delete(':code')
+  remove(@Param('code') code: string) {
+    return this.authorsService.remove(code);
   }
 }

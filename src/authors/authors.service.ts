@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAuthorDto } from './dto/create-author.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateAuthorDto } from './dto/create-author.dto';
+import { UpdateAuthorDto } from './dto/update-author.dto';
 
 @Injectable()
 export class AuthorsService {
@@ -33,5 +34,16 @@ export class AuthorsService {
         }
       : {};
     return await this.prisma.author.findMany({ where: { ...searchQuery } });
+  }
+
+  async update(code: string, updateAuthorDto: UpdateAuthorDto) {
+    return this.prisma.author.update({
+      where: { code },
+      data: updateAuthorDto,
+    });
+  }
+
+  remove(code: string) {
+    return this.prisma.author.delete({ where: { code } });
   }
 }
