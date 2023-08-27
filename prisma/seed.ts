@@ -85,8 +85,10 @@ async function main() {
       synopsis:
         'Un niño descubre que es un mago y comienza una aventura en una escuela de magia.',
       year: 1997,
-      isRead: true,
       authorId: author1.id,
+      users: {
+        create: [{ user: { connect: { email: user3.email } } }],
+      },
     },
   });
 
@@ -120,6 +122,12 @@ async function main() {
         'Una familia se muda a un hotel aislado para el invierno donde una presencia siniestra influye en el padre hacia la violencia.',
       year: 1977,
       authorId: author3.id,
+      users: {
+        create: [
+          { user: { connect: { email: user1.email } } },
+          { user: { connect: { email: user2.email } } },
+        ],
+      },
     },
   });
 

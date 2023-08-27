@@ -8,19 +8,19 @@ datasource db {
 }
 
 model Book {
-  id        Int      @id @default(autoincrement())
-  isbn      String   @unique
+  id        Int        @id @default(autoincrement())
+  isbn      String     @unique
   title     String
   genre     String
   pages     Int
   cover     String?
   synopsis  String?
   year      Int
-  author    Author   @relation(fields: [authorId], references: [id])
+  author    Author     @relation(fields: [authorId], references: [id])
   authorId  Int
-  isRead    Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  users     BookUser[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model Author {
@@ -34,12 +34,26 @@ model Author {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
   firstName String
   lastName  String
   password  String
   role      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  books     BookUser[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model BookUser {
+  book       Book     @relation(fields: [bookIsbn], references: [isbn])
+  bookIsbn   String
+  user       User     @relation(fields: [userEmail], references: [email])
+  userEmail  String
+  isRead     Boolean  @default(false)
+  isFavorite Boolean  @default(false)
+  mark       Int?
+  assignedAt DateTime @default(now())
+
+  @@id([bookIsbn, userEmail])
 }
