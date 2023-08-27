@@ -11,38 +11,44 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserEntity } from './entities/user.entity';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    return new UserEntity(await this.usersService.create(createUserDto));
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  async findAll() {
+    const users = await this.usersService.findAll();
+    return users.map((user) => new UserEntity(user));
   }
 
   @Get('all')
-  findByEmail(@Query('email') email: string) {
-    return this.usersService.findByEmail(email);
+  async findByEmail(@Query('email') email: string) {
+    return new UserEntity(await this.usersService.findByEmail(email));
   }
 
   @Get('search')
-  findByName(@Query('name') searchStr?: string) {
-    return this.usersService.findByName(searchStr);
+  async findByName(@Query('name') searchStr?: string) {
+    const users = await this.usersService.findByName(searchStr);
+    return users.map((user) => new UserEntity(user));
   }
 
   @Patch(':email')
-  update(@Param('email') email: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(email, updateUserDto);
+  async update(
+    @Param('email') email: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return new UserEntity(await this.usersService.update(email, updateUserDto));
   }
 
   @Delete(':email')
-  remove(@Param('email') email: string) {
-    return this.usersService.remove(email);
+  async remove(@Param('email') email: string) {
+    return new UserEntity(await this.usersService.remove(email));
   }
 }
