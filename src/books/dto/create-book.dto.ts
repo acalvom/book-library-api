@@ -41,9 +41,4 @@ export class CreateBookDto {
   @IsInt()
   @IsNotEmpty()
   authorId: number;
-
-  @IsBoolean()
-  @IsOptional()
-  @IsNotEmpty()
-  isRead?: boolean = false;
 }

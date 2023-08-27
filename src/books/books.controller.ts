@@ -26,11 +26,6 @@ export class BooksController {
     return await this.booksService.findAll();
   }
 
-  @Get('read')
-  async findRead() {
-    return await this.booksService.findRead();
-  }
-
   @Get(':isbn')
   async findByIsbn(@Param('isbn') isbn: string) {
     const book = await this.booksService.findByIsbn(isbn);

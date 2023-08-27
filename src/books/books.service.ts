@@ -15,10 +15,6 @@ export class BooksService {
     return this.prisma.book.findMany();
   }
 
-  findRead() {
-    return this.prisma.book.findMany({ where: { isRead: true } });
-  }
-
   findByIsbn(isbn: string) {
     return this.prisma.book.findUnique({ where: { isbn } });
   }
