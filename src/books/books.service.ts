@@ -16,7 +16,12 @@ export class BooksService {
   }
 
   findByIsbn(isbn: string) {
-    return this.prisma.book.findUnique({ where: { isbn } });
+    return this.prisma.book.findUnique({
+      where: { isbn },
+      include: {
+        author: true,
+      },
+    });
   }
 
   update(isbn: string, updateBookDto: UpdateBookDto) {

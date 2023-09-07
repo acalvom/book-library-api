@@ -16,14 +16,13 @@ export class UsersService {
   }
 
   async findByEmail(email: string) {
-    console.log('🚀 ~ UsersService ~ findByEmail ~ email:', email);
-
-    return await this.prisma.user.findUnique({ where: { email } });
+    return await this.prisma.user.findUnique({
+      where: { email },
+      include: { books: true },
+    });
   }
 
   async findByName(searchStr: string) {
-    console.log('🚀 ~ UsersService ~ findByName ~ searchStr:', searchStr);
-
     const searchQuery = searchStr
       ? {
           OR: [

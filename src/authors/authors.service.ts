@@ -20,7 +20,12 @@ export class AuthorsService {
   }
 
   async findByCode(code: string) {
-    return await this.prisma.author.findUnique({ where: { code } });
+    return await this.prisma.author.findUnique({
+      where: { code },
+      include: {
+        books: true,
+      },
+    });
   }
 
   async findByName(searchStr: string) {
@@ -33,7 +38,12 @@ export class AuthorsService {
           ],
         }
       : {};
-    return await this.prisma.author.findMany({ where: { ...searchQuery } });
+    return await this.prisma.author.findMany({
+      where: { ...searchQuery },
+      include: {
+        books: true,
+      },
+    });
   }
 
   async update(code: string, updateAuthorDto: UpdateAuthorDto) {
