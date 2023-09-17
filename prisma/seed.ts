@@ -3,6 +3,43 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+  const user1 = await prisma.user.upsert({
+    where: { email: 'aitor-menta@email.com' },
+    update: {},
+    create: {
+      email: 'aitor-menta@email.com',
+      firstName: 'Aitor',
+      lastName: 'Menta',
+      password: 'password-aitor',
+      role: 'admin',
+    },
+  });
+
+  const user2 = await prisma.user.upsert({
+    where: { email: 'leo-pardo@email.com' },
+    update: {},
+    create: {
+      email: 'leo-pardo@email.com',
+      firstName: 'Leo',
+      lastName: 'Pardo',
+      password: 'password-leo',
+      role: 'user',
+    },
+  });
+
+  const user3 = await prisma.user.upsert({
+    where: { email: 'lola-garto@email.com' },
+    update: {},
+    create: {
+      email: 'lola-garto@email.com',
+      firstName: 'Lola',
+      lastName: 'Gart0',
+      password: 'password-lola',
+      role: 'user',
+    },
+  });
+  console.log({ user1, user2, user3 });
+
   const author1 = await prisma.author.upsert({
     where: { code: 'j-k-rowling' },
     update: {},
@@ -48,8 +85,10 @@ async function main() {
       synopsis:
         'Un niño descubre que es un mago y comienza una aventura en una escuela de magia.',
       year: 1997,
-      isRead: true,
       authorId: author1.id,
+      users: {
+        create: [{ user: { connect: { email: user3.email } } }],
+      },
     },
   });
 
@@ -83,6 +122,12 @@ async function main() {
         'Una familia se muda a un hotel aislado para el invierno donde una presencia siniestra influye en el padre hacia la violencia.',
       year: 1977,
       authorId: author3.id,
+      users: {
+        create: [
+          { user: { connect: { email: user1.email } } },
+          { user: { connect: { email: user2.email } } },
+        ],
+      },
     },
   });
 
